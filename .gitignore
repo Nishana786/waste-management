@@ -1,0 +1,16 @@
+# ================= BACKEND =================
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+.env
+instance/
+venv/
+env/
+
+waste.db
+*.sqlite3
+
+uploads/
