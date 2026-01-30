@@ -3,7 +3,7 @@ from flask import Flask, send_from_directory
 from flask_cors import CORS
 
 from app.extensions import db, bcrypt, jwt
-from app.routes.authRoutes import auth_bp
+from app.routes.auth_routes import auth_bp
 from app.routes.adminRoutes import admin_bp
 from app.routes.reportRoutes import report_bp
 from app.routes.requestRoutes import request_bp
