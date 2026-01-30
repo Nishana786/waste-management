@@ -9,7 +9,7 @@ from app.routes.reportRoutes import report_bp
 from app.routes.requestRoutes import request_bp
 from app.routes.dashboardRoutes import dashboard_bp
 from app.routes.driver_routes import driver_bp
-from app.utils.seed_admin import seed_admin   # ✅ ADD THIS
+from app.utils.seed_admin import seed_admin   
 
 
 def create_app():
@@ -63,9 +63,9 @@ def create_app():
     app.register_blueprint(admin_bp)
     app.register_blueprint(driver_bp)
 
-    # ---------------- DB INIT + ADMIN SEED 🔥 ----------------
+    # ---------------- DB INIT + ADMIN SEED  ----------------
     with app.app_context():
         db.create_all()
-        seed_admin()   # 👑 REAL-WORLD ADMIN AUTO CREATE
+        seed_admin()   
 
     return app
