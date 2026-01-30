@@ -3,13 +3,14 @@ from flask import Flask, send_from_directory
 from flask_cors import CORS
 
 from app.extensions import db, bcrypt, jwt
-from app.routes.auth_routes import auth_bp
+from app.routes.auth_Routes import auth_bp
 from app.routes.adminRoutes import admin_bp
 from app.routes.reportRoutes import report_bp
 from app.routes.requestRoutes import request_bp
 from app.routes.dashboardRoutes import dashboard_bp
 from app.routes.driver_routes import driver_bp
 from app.utils.seed_admin import seed_admin
+
 
 def create_app():
     app = Flask(__name__)
@@ -29,8 +30,14 @@ def create_app():
     app.config["JWT_HEADER_NAME"] = "Authorization"
     app.config["JWT_HEADER_TYPE"] = "Bearer"
 
-    # ---------------- CORS ----------------
-    CORS(app, resources={r"/*": {"origins": "*"}})
+    # ---------------- CORS (🔥 FULL FIX) ----------------
+    CORS(
+        app,
+        resources={r"/*": {"origins": "*"}},
+        supports_credentials=True,
+        allow_headers=["Content-Type", "Authorization"],
+        methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    )
 
     # ---------------- EXTENSIONS ----------------
     db.init_app(app)
@@ -45,8 +52,7 @@ def create_app():
     def serve_uploaded_file(filename):
         return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
-    # ---------------- BLUEPRINTS (IMPORTANT) ----------------
-       
+    # ---------------- BLUEPRINTS ----------------
     app.register_blueprint(auth_bp)
     app.register_blueprint(report_bp)
     app.register_blueprint(request_bp)
@@ -54,10 +60,9 @@ def create_app():
     app.register_blueprint(admin_bp)
     app.register_blueprint(driver_bp)
 
-
     # ---------------- DB INIT + ADMIN SEED ----------------
     with app.app_context():
         db.create_all()
-        seed_admin()   # 👈 bcrypt based admin seed
+        seed_admin()  # 👑 auto-create admin (bcrypt)
 
     return app
