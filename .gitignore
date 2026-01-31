@@ -7,10 +7,12 @@ __pycache__/
 
 .env
 instance/
+
 venv/
 env/
 
-waste.db
 *.sqlite3
+*.db
 
-uploads/
+uploads/*
+!uploads/.gitkeep
