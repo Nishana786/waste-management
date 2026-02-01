@@ -15,13 +15,16 @@ from app.utils.seed_admin import seed_admin
 def create_app():
     app = Flask(__name__)
 
+    # ---------------- PATHS ----------------
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
     ROOT_DIR = os.path.abspath(os.path.join(BASE_DIR, ".."))
     UPLOAD_FOLDER = os.path.join(ROOT_DIR, "uploads")
 
     # ---------------- CONFIG ----------------
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "secret123")
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(BASE_DIR, "waste.db")
+    app.config["SQLALCHEMY_DATABASE_URI"] = (
+        "sqlite:///" + os.path.join(BASE_DIR, "waste.db")
+    )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     # ---------------- JWT ----------------
@@ -30,18 +33,19 @@ def create_app():
     app.config["JWT_HEADER_NAME"] = "Authorization"
     app.config["JWT_HEADER_TYPE"] = "Bearer"
 
-    # ---------------- ✅ CORS (FULL & CORRECT FIX) ----------------
-        # ---------------- ✅ CORS (FIXED) ----------------
+    # ---------------- ✅ CORS (PROFESSIONAL FIX) ----------------
+    frontend_url = os.getenv(
+        "FRONTEND_URL",
+        "https://waste-management-frontend-kohl.vercel.app"
+    )
+
     CORS(
         app,
-        resources={r"/*": {"origins": "*"}},
+        resources={r"/*": {"origins": frontend_url}},
         supports_credentials=True,
         allow_headers=["Content-Type", "Authorization"],
         methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     )
-
-
-
 
     # ---------------- EXTENSIONS ----------------
     db.init_app(app)
